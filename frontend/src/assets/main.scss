@@ -1,0 +1,66 @@
+@mixin fontStyle($name, $weight, $style) {
+  @font-face {
+    font-family: "ABCGintoNord";
+    src: url("/fonts/#{$name}.woff2") format("woff2");
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include fontStyle("ABCGintoNord-Hairline-Trial", 100, normal);
+@include fontStyle("ABCGintoNord-HairlineItalic-Trial", 100, italic);
+@include fontStyle("ABCGintoNord-Ultra-Trial", 200, normal);
+@include fontStyle("ABCGintoNord-UltraItalic-Trial", 200, italic);
+@include fontStyle("ABCGintoNord-Light-Trial", 300, normal);
+@include fontStyle("ABCGintoNord-LightItalic-Trial", 300, italic);
+@include fontStyle("ABCGintoNord-Regular-Trial", 400, normal);
+@include fontStyle("ABCGintoNord-RegularItalic-Trial", 400, normal);
+@include fontStyle("ABCGintoNord-Medium-Trial", 500, normal);
+@include fontStyle("ABCGintoNord-MediumItalic-Trial", 500, italic);
+@include fontStyle("ABCGintoNord-Bold-Trial", 700, normal);
+@include fontStyle("ABCGintoNord-BoldItalic-Trial", 700, italic);
+@include fontStyle("ABCGintoNord-Black-Trial", 800, normal);
+@include fontStyle("ABCGintoNord-BlackItalic-Trial", 800, italic);
+
+body {
+  font-family: 'ABCGintoNord';
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  height: calc(100vh - 4rem);
+  background-image: url(/background.png);
+  color: white;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-top {
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-style: italic;
+  margin: 0;
+}
+
+h3 {
+  font-weight: 500;
+}
