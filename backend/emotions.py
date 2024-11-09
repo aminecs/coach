@@ -87,7 +87,7 @@ def get_feed():
 
 # Open AI solution
 
-def get_llm_emotions_classification():
+def get_llm_emotions_classification(control_event):
     print("Getting LLM emotions classification")
     cap = cv2.VideoCapture(0)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -105,9 +105,9 @@ def get_llm_emotions_classification():
             if frame_count % (fps * 5) == 0:
                 # Call LLM
                 print("Calling LLM")
-                #pause_event.clear()
+                control_event.clear()
                 response = llm_call(frame)
-                #pause_event.set()
+                control_event.set()
                 print(response)
                 # optional 
                 frame_count = 0

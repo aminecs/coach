@@ -6,10 +6,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    thread_1 = multiprocessing.Process(target=conversations.start_conversation)
-    thread_1.start()
-    thread_2 = multiprocessing.Process(target=emotions.get_llm_emotions_classification)
-    thread_2.start()
+    control_event = multiprocessing.Event()
+    control_event.set()
+
+    p1 = multiprocessing.Process(target=conversations.start_conversation)
+    p1.start()
+    p2 = multiprocessing.Process(target=emotions.get_llm_emotions_classification, args=(control_event,))
+    p2.start()
 
     return "<p>Hello, World!</p>"
 
