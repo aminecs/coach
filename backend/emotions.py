@@ -124,7 +124,7 @@ def llm_call(frame):
     {
         "role": "user",
         "content": [
-            "This is a picture of a person. Respond with one word. If they are happy or neutral, respond with 'happy'. Otherwise, respond with 'help'.",
+            "This is a picture of a person. Respond in JSON, the key should be 'emotion'. If they are happy or neutral, respond with 'approve'. Otherwise, respond with 'support'.",
             {"image": base64_img, "resize": 768},
         ],
     },
@@ -133,6 +133,7 @@ def llm_call(frame):
         "model": "gpt-4-turbo",
         "messages": PROMPT_MESSAGES,
         "max_tokens": 200,
+        "response_format":{ "type": "json_object"}
     }
 
 
