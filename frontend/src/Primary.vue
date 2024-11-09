@@ -1,11 +1,51 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import Button from './components/Button.vue';
 import type { Profile } from './types';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const { profile } = defineProps<{
     profile: Profile
 }>();
+
+const started = ref<boolean>(false);
+const running = ref<boolean>(false);
+const elapsed = ref<number>(0.);
+const timerId = ref<number>(0);
+const distance = ref<number>(0);
+const distanceId = ref<number>(0);
+
+function onStart() {
+    started.value = true;
+    running.value = true;
+    timerId.value = setInterval(() => elapsed.value += 1, 1000);
+    distanceId.value = setInterval(() => distance.value += 1, 700);
+}
+
+function onPlayPause() {
+    if (running.value) {
+        running.value = false;
+        clearInterval(timerId.value);
+        clearInterval(distanceId.value);
+    } else {
+        running.value = true;
+        timerId.value = setInterval(() => elapsed.value += 1, 1000);
+        distanceId.value = setInterval(() => distance.value += 1, 700);
+    }
+}
+
+const zeroPad = (num, places) => String(num).padStart(places, '0')
+
+const elapsedFormatted = computed(() => {
+    const minute = Math.round(elapsed.value / 60);
+    const seconds = elapsed.value % 60;
+    return `${minute}:${zeroPad(seconds, 2)}`;
+});
+
+const distanceFormatted = computed(() => {
+    const km = Math.round(distance.value / 1000);
+    const m = distance.value % 100;
+    return `${km}.${zeroPad(m, 2)}`;
+});
 
 </script>
 
@@ -14,26 +54,53 @@ const { profile } = defineProps<{
         <div class="row">
             <div class="status">
                 <div class="text">
-                    <p class="name">Goal</p>
-                    <p class="description">5K</p>
+                    <p class="name">5 kilometers</p>
+                    <p class="description">Goal</p>
                 </div>
             </div>
             <div class="status">
                 <img :src="profile.coach?.img">
                 <div class="text">
-                    <p class="name">Coach</p>
-                    <p class="description">{{ profile.coach?.name }}</p>
+                    <p class="name">{{ profile.coach?.name }}</p>
+                    <p class="description">Coach</p>
                 </div>
             </div>
         </div>
-        <div class="main">
-            <Button class="start">
+        <div class="main" v-if="!started">
+            <Button class="start" @click="onStart">
                 Start
             </Button>
         </div>
+        <div v-else class="main">
+            <div class="row">
+                <div class="stat">
+                    <h2>7'07</h2>
+                    <p>Pace</p>
+                </div>
+                <div class="stat">
+                    <h2>135</h2>
+                    <p>BPM</p>
+                </div>
+                <div class="stat">
+                    <h2>{{ elapsedFormatted }}</h2>
+                    <p>Time</p>
+                </div>
+            </div>
+            <div class="row km">
+                <div class="stat"><span>{{ distanceFormatted }}</span>km</div>
+            </div>
+            <div class="row controls">
+                <Button @click="onPlayPause">
+                    <fa-icon :icon="['fa-solid', running ? 'fa-pause' : 'fa-play']" />
+                </Button>
+                <Button>
+                    <fa-icon icon="fa-solid fa-stop" />
+                </Button>
+            </div>
+        </div>
         <div class="row">
             <div class="status">
-                <img :src="profile.coach?.img">
+                <img src="/playing.png">
                 <div class="text">
                     <p class="meta">
                         <fa-icon icon="fa-brands fa-spotify" />
@@ -59,14 +126,35 @@ const { profile } = defineProps<{
     justify-content: space-between;
 }
 
+.km {
+    justify-content: center;
+
+    span {
+        font-size: 4rem;
+    }
+}
+
+.controls {
+    justify-content: center;
+
+    button {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 2.5rem;
+    }
+}
+
 .status {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 1rem;
     width: 100%;
     display: flex;
     gap: 1rem;
     align-items: center;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 img {
@@ -99,5 +187,19 @@ p {
     border-radius: 5rem;
 }
 
-.main {}
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stat {
+    text-align: center;
+    padding: 1rem;
+
+    h2 {
+        font-size: 2.5rem;
+    }
+}
 </style>
