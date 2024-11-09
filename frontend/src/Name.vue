@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Button from './Button.vue';
+import Button from './components/Button.vue';
 
 const emit = defineEmits(['changeStage']);
 
@@ -11,13 +11,13 @@ function onNext() {
 </script>
 
 <template>
-<section class="container ">
-    <h3>What's your name?</h3>
-    <input v-model="name" placeholder="Your name" @keyup.enter.native="onNext" />
-    <Button @click="onNext">
-        Next
-    </Button>
-</section>
+    <section class="container ">
+        <h3>What's your name?</h3>
+        <input v-model="name" placeholder="Your name" @keyup.enter.native="onNext" />
+        <Button @click="onNext">
+            Next
+        </Button>
+    </section>
 </template>
 
 <style lang="scss" scoped>

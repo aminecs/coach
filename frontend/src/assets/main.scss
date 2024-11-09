@@ -27,6 +27,7 @@ body {
   margin: 0;
   overflow: hidden;
   padding: 3rem;
+  padding-top: 2rem;
   height: calc(100vh - 4rem);
   background-image: url(/background.png);
   color: white;
@@ -42,18 +43,25 @@ main {
   width: 100%;
   height: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.small-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   justify-content: center;
   align-items: center;
-}
-
-section {
-  height: 100%;
 }
 
 .brand-top {
