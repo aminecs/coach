@@ -37,6 +37,7 @@ backend/coverage.xml
 backend/htmlcov/
 backend/.pyre/
 backend/.pytype/
+backend/face_landmarker.task
 
 
 # Frontend project
