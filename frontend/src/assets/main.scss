@@ -26,7 +26,7 @@ body {
   font-family: 'ABCGintoNord';
   margin: 0;
   overflow: hidden;
-  padding: 2rem;
+  padding: 3rem;
   height: calc(100vh - 4rem);
   background-image: url(/background.png);
   color: white;
@@ -50,6 +50,10 @@ main {
   gap: 2rem;
   justify-content: center;
   align-items: center;
+}
+
+section {
+  height: 100%;
 }
 
 .brand-top {

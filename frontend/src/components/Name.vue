@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Brand from './Brand.vue';
 import Button from './Button.vue';
 
+const emit = defineEmits(['changeStage']);
+
 const name = ref("");
+function onNext() {
+    emit('changeStage', 'Coach', { name });
+}
 </script>
 
 <template>
-<main>
-    <div class="">
-        <Brand />
-    </div>
-    <div class="container">
-        <h3>What's your name?</h3>
-        <input v-model="name" placeholder="Your name" />
-        <Button @click="$emit('changeStage', 'Coach')">
-            Next
-        </Button>
-    </div>
-</main>
+<section class="container ">
+    <h3>What's your name?</h3>
+    <input v-model="name" placeholder="Your name" @keyup.enter.native="onNext" />
+    <Button @click="onNext">
+        Next
+    </Button>
+</section>
 </template>
 
 <style lang="scss" scoped>

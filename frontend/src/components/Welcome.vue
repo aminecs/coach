@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import Button from './Button.vue';
 import Brand from './Brand.vue';
+import Button from './Button.vue';
 </script>
 
 <template>
-<main class="container">
+<section class="container">
     <Brand />
     <h3>Achieve your running goals with Coach</h3>
     <Button @click="$emit('changeStage', 'Name')">
         Let's go 🔥
     </Button>
-</main>
+</section>
 </template>
 
 <style lang="scss" scoped>
