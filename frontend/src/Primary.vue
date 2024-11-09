@@ -18,7 +18,8 @@ function onStart() {
     started.value = true;
     running.value = true;
     timerId.value = setInterval(() => elapsed.value += 1, 1000);
-    distanceId.value = setInterval(() => distance.value += 1, 700);
+    distanceId.value = setInterval(() => distance.value += 1, 300);
+    fetch("http://127.0.0.1:5000");
 }
 
 function onPlayPause() {
@@ -29,7 +30,7 @@ function onPlayPause() {
     } else {
         running.value = true;
         timerId.value = setInterval(() => elapsed.value += 1, 1000);
-        distanceId.value = setInterval(() => distance.value += 1, 700);
+        distanceId.value = setInterval(() => distance.value += 1, 300);
     }
 }
 
@@ -43,7 +44,7 @@ const elapsedFormatted = computed(() => {
 
 const distanceFormatted = computed(() => {
     const km = Math.round(distance.value / 1000);
-    const m = distance.value % 100;
+    const m = Math.round(distance.value % 1000 / 10);
     return `${km}.${zeroPad(m, 2)}`;
 });
 
