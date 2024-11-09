@@ -23,7 +23,7 @@ def get_response(text: str):
             # Set a user message for the assistant to respond to.
             {
                 "role": "user",
-                "content": text,
+                "content": f"The user is feeling {text}",
             }
         ],
 
@@ -59,5 +59,3 @@ def get_response(text: str):
 
     # Print the completion returned by the LLM.
     return chat_completion.choices[0].message.content
-
-print(get_response("The user is struggling at running."))

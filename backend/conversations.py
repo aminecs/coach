@@ -10,29 +10,31 @@ API_KEY = os.getenv("ELEVEN_API_KEY")
 
 client = ElevenLabs(api_key=API_KEY)
 
-conversation = Conversation(
-    # API client and agent ID.
-    client,
-    AGENT_ID,
+def start_conversation():
+    conversation = Conversation(
+        # API client and agent ID.
+        client,
+        AGENT_ID,
 
-    # Assume auth is required when API_KEY is set.
-    requires_auth=bool(API_KEY),
+        # Assume auth is required when API_KEY is set.
+        requires_auth=bool(API_KEY),
 
-    # Use the default audio interface.
-    audio_interface=DefaultAudioInterface(),
+        # Use the default audio interface.
+        audio_interface=DefaultAudioInterface(),
 
-    # Simple callbacks that print the conversation to the console.
-    callback_agent_response=lambda response: print(f"Agent: {response}"),
-    callback_agent_response_correction=lambda original, corrected: print(f"Agent: {original} -> {corrected}"),
-    callback_user_transcript=lambda transcript: print(f"User: {transcript}"),
+        # Simple callbacks that print the conversation to the console.
+        callback_agent_response=lambda response: print(f"Agent: {response}"),
+        callback_agent_response_correction=lambda original, corrected: print(f"Agent: {original} -> {corrected}"),
+        callback_user_transcript=lambda transcript: print(f"User: {transcript}"),
 
-    # Uncomment if you want to see latency measurements.
-    callback_latency_measurement=lambda latency: print(f"Latency: {latency}ms"),
-)
+        # Uncomment if you want to see latency measurements.
+        callback_latency_measurement=lambda latency: print(f"Latency: {latency}ms"),
+    )
 
-conversation.start_session()
+    conversation.start_session()
 
-signal.signal(signal.SIGINT, lambda sig, frame: conversation.end_session())
+    signal.signal(signal.SIGINT, lambda sig, frame: conversation.end_session())
 
-conversation_id = conversation.wait_for_session_end()
-print(f"Conversation ID: {conversation_id}")
+    conversation_id = conversation.wait_for_session_end()
+    print(f"Conversation ID: {conversation_id}")
+    return conversation

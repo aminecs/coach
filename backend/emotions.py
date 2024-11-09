@@ -11,6 +11,8 @@ from openai import OpenAI
 import os
 import cv2
 import numpy as np
+import json
+import voice
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -86,11 +88,11 @@ def get_feed():
 # Open AI solution
 
 def get_llm_emotions_classification():
-
+    print("Getting LLM emotions classification")
     cap = cv2.VideoCapture(0)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-    frame_count = 5
+    frame_count = 3
     while(True):
         ret, frame = cap.read()
 
@@ -102,7 +104,10 @@ def get_llm_emotions_classification():
 
             if frame_count % (fps * 5) == 0:
                 # Call LLM
+                print("Calling LLM")
+                #pause_event.clear()
                 response = llm_call(frame)
+                #pause_event.set()
                 print(response)
                 # optional 
                 frame_count = 0
@@ -124,7 +129,12 @@ def llm_call(frame):
     {
         "role": "user",
         "content": [
-            "This is a picture of a person. Respond in JSON, the key should be 'emotion'. If they are happy or neutral, respond with 'approve'. Otherwise, respond with 'support'.",
+            """
+            You are an AI coach for runners. You motivate them David Goggins style. Look at the image for the current state of the runner. 
+            If they are happy or neutral, return a sentence that approves their attitude in the tone of David Goggins. 
+            If they are any other emotion, return a sentence that motivates them to be push themselves in the tone of David Goggins.
+            If their tongue is out, this indicates that their pace is too slow, get them to speed up in the tone of David Goggins.
+            """,
             {"image": base64_img, "resize": 768},
         ],
     },
@@ -132,13 +142,12 @@ def llm_call(frame):
     params = {
         "model": "gpt-4-turbo",
         "messages": PROMPT_MESSAGES,
-        "max_tokens": 200,
-        "response_format":{ "type": "json_object"}
+        "max_tokens": 200
+        #"response_format":{ "type": "json_object"}
     }
 
 
     result = client.chat.completions.create(**params)
-    return result.choices[0].message.content
-
-
-get_llm_emotions_classification()
+    voice.speak(result.choices[0].message.content)
+    # emotion = json.loads(result.choices[0].message.content)["emotion"]
+    # return emotion
