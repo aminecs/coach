@@ -15,6 +15,8 @@ export const coachInfo = {
 
 export type CoachName = keyof typeof coachInfo;
 
+export type Goal = "5 kilometers" | "10 kilometers" | "Marathon" | "Custom";
+
 export interface Profile {
   name?: string;
   coach?: {
@@ -22,4 +24,5 @@ export interface Profile {
     img: string;
   };
   motivation?: string;
+  goal?: Goal;
 }

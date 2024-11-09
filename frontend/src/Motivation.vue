@@ -6,7 +6,7 @@ const emit = defineEmits(['changeStage']);
 
 const motivation = ref("");
 function onNext() {
-    emit('changeStage', 'Primary', { motivation });
+    emit('changeStage', 'Goal', { motivation });
 }
 </script>
 

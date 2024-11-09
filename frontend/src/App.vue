@@ -7,23 +7,26 @@ import type { CoachName, Profile } from './types';
 import Coach from './Coach.vue';
 import Primary from './Primary.vue';
 import Motivation from './Motivation.vue';
+import Goal from './Goal.vue';
 
 const stages = {
   Welcome,
   Name,
   Coach,
   Motivation,
+  Goal,
   Primary,
 };
 
-const stage = ref<keyof typeof stages>('Primary');
-const defaultProfile = {
+const stage = ref<keyof typeof stages>('Goal');
+const defaultProfile: Profile = {
   name: 'Amine',
   coach: {
     name: "David Goggins",
     img: "/goggins-profile.png",
   },
   motivation: 'dfadjsf dsjfads;f jkjds;j fkdsj f',
+  goal: '5 kilometers',
 }
 const profile = ref<Profile>(defaultProfile);
 

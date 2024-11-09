@@ -55,7 +55,7 @@ const distanceFormatted = computed(() => {
         <div class="row">
             <div class="status">
                 <div class="text">
-                    <p class="name">5 kilometers</p>
+                    <p class="name">{{ profile.goal }}</p>
                     <p class="description">Goal</p>
                 </div>
             </div>
@@ -73,7 +73,7 @@ const distanceFormatted = computed(() => {
             </Button>
         </div>
         <div v-else class="main">
-            <div class="row">
+            <div class="row other">
                 <div class="stat">
                     <h2>7'07</h2>
                     <p>Pace</p>
@@ -125,6 +125,10 @@ const distanceFormatted = computed(() => {
     display: flex;
     gap: 2rem;
     justify-content: space-between;
+}
+
+.other {
+    gap: 0;
 }
 
 .km {
@@ -198,6 +202,7 @@ p {
 .stat {
     text-align: center;
     padding: 1rem;
+    min-width: 7rem;
 
     h2 {
         font-size: 2.5rem;
