@@ -5,8 +5,15 @@ from mediapipe.tasks.python import vision
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 
+from IPython.display import display, Image, Audio
+import base64
+from openai import OpenAI
+import os
 import cv2
 import numpy as np
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
 
 def draw_landmarks_on_image(rgb_image, detection_result):
   face_landmarks_list = detection_result.face_landmarks
@@ -48,7 +55,7 @@ def draw_landmarks_on_image(rgb_image, detection_result):
 
 def get_feed():
 
-    base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
+    base_options = python.BaseOptions(model_asset_path='face_landmarker.task') # This file needs to be downloaded from mediapipe
 
     options = vision.FaceLandmarkerOptions(base_options=base_options,
                                         output_face_blendshapes=True,
@@ -76,6 +83,61 @@ def get_feed():
     cap.release()
     cv2.destroyAllWindows()
 
+# Open AI solution
 
-get_feed()
-        
+def get_llm_emotions_classification():
+
+    cap = cv2.VideoCapture(0)
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+
+    frame_count = 5
+    while(True):
+        ret, frame = cap.read()
+
+        if not ret:
+            print("Error: failed to capture image")
+            break
+        else:
+            frame_count += 1
+
+            if frame_count % (fps * 5) == 0:
+                # Call LLM
+                response = llm_call(frame)
+                print(response)
+                # optional 
+                frame_count = 0
+
+        cv2.imshow('frame', frame)
+
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+def llm_call(frame):
+    _, buffer = cv2.imencode(".jpg", frame)
+    base64_img = base64.b64encode(buffer).decode("utf-8")
+
+    PROMPT_MESSAGES = [
+    {
+        "role": "user",
+        "content": [
+            "This is a picture of a person. Respond with one word. If they are happy or neutral, respond with 'happy'. Otherwise, respond with 'help'.",
+            {"image": base64_img, "resize": 768},
+        ],
+    },
+    ]
+    params = {
+        "model": "gpt-4-turbo",
+        "messages": PROMPT_MESSAGES,
+        "max_tokens": 200,
+    }
+
+
+    result = client.chat.completions.create(**params)
+    return result.choices[0].message.content
+
+
+get_llm_emotions_classification()

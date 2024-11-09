@@ -38,6 +38,8 @@ backend/htmlcov/
 backend/.pyre/
 backend/.pytype/
 backend/face_landmarker.task
+backend/dataset/
+backend/archive.zip
 
 
 # Frontend project
