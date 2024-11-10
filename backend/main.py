@@ -76,6 +76,11 @@ def bye_world():
     p2.join()
     return "<p>Goodbye, World!</p>"
 
+@app.route('/api/leaderboard', methods=['GET'])
+def leaderboard():
+    voice.speak("LOOK AT THAT HAHA, YOU'RE ON THE LEADERBOARD. STAY HARD!")
+    return "LEADERBOARD - PLAYED - STAY HARD!"
+
 @app.route('/api/video', methods=['GET'])
 def video_endpoint():
     print("FUNCTION CALL WORKING - Video appears")
