@@ -135,7 +135,8 @@ def help():
     elif param == "motivation":
         voice.speak("What's your motivation?")
         response = stt.stt(param)
-        socketio.emit('motivation', response);
+        socketio.emit('motivation', response)
+        param = "other"
         return response
     else:
         return "DONE - WHY DID WE ASK FOR HELP?"
