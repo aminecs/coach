@@ -64,12 +64,9 @@ const socket = io("http://127.0.0.1:8200", {
     withCredentials: false,
     transports: ['websocket', 'polling']
 });
-socket.on('connect', function () {
-    console.log('connected websocket');
-});
 socket.on('video', () => {
     showMansion.value = true;
-    setInterval(() => showMansion.value = false, 7000);
+    setTimeout(() => showMansion.value = false, 7000);
 });
 </script>
 
