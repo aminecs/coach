@@ -3,7 +3,7 @@ import { ref, useTemplateRef } from 'vue';
 import Welcome from './Welcome.vue';
 import Name from './Name.vue';
 import Brand from './components/Brand.vue';
-import type { Profile } from './types';
+import { socket, type Profile } from './types';
 import Coach from './Coach.vue';
 import Primary from './Primary.vue';
 import Motivation from './Motivation.vue';
@@ -50,38 +50,47 @@ async function changeStage(
     case 'Name':
       param = 'name';
       break;
-    case 'Coach':
-      param = 'coach';
-      break;
-    case 'Goal':
-      param = 'goal'
-      break;
+    // case 'Coach':
+    //   param = 'coach';
+    //   break;
+    // case 'Goal':
+    //   param = 'goal'
+    //   break;
     case 'Motivation':
       param = 'motivation'
       break;
   }
   if (param !== undefined) {
-    const resp = await fetch("http://127.0.0.1:8200/api/audio?" + new URLSearchParams({ param }), {
+    await fetch("http://127.0.0.1:8200/api/audio?" + new URLSearchParams({ param }), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const res = await resp.text();
-    console.log(res);
-    switch (newStage) {
-      case 'Name':
-        comp.value?.setName(res);
-        break;
-      // case 'Coach':
-      //   comp.value?.clickGoggins();
-      //   break;
-      case 'Motivation':
-        comp.value?.fillMotivation(res);
-        break;
-    }
+    // const res = await resp.text();
+    // console.log(res);
+    // switch (newStage) {
+    //   case 'Name':
+    //     comp.value?.setName(res);
+    //     break;
+    //   // case 'Coach':
+    //   //   comp.value?.clickGoggins();
+    //   //   break;
+    //   case 'Motivation':
+    //     comp.value?.fillMotivation(res);
+    //     break;
+    // }
   }
 }
+
+socket.on('name', (newName) => {
+  console.log(`name ${newName}`);
+});
+
+socket.on('motivation', (newMotivation) => {
+  console.log(`motivation ${newMotivation}`);
+});
+
 </script>
 
 <template>

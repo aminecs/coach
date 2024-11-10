@@ -1,3 +1,5 @@
+import { io } from "socket.io-client";
+
 export const coachInfo = {
   goggins: {
     name: "David Goggins",
@@ -55,3 +57,8 @@ export interface Profile {
     desc: string;
   };
 }
+
+export const socket = io("http://127.0.0.1:8200", {
+  withCredentials: false,
+  transports: ["websocket", "polling"],
+});

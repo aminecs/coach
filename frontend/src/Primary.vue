@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import Button from './components/Button.vue';
-import type { Profile } from './types';
-import { io } from 'socket.io-client'
+import { socket, type Profile } from './types';
 
 const { profile } = defineProps<{
     profile: Profile
@@ -60,10 +59,7 @@ const distanceFormatted = computed(() => {
     return `${km}.${zeroPad(m, 2)}`;
 });
 
-const socket = io("http://127.0.0.1:8200", {
-    withCredentials: false,
-    transports: ['websocket', 'polling']
-});
+
 socket.on('video', () => {
     showMansion.value = true;
     setTimeout(() => showMansion.value = false, 7000);

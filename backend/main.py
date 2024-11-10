@@ -112,13 +112,16 @@ def help():
     if param == "name":
         voice.speak("What's your name?")
         response = stt.stt(param)
+        socketio.emit('name', response);
         return response
     elif param == "motivation":
         voice.speak("What's your goal?")
         response = stt.stt(param)
+        socketio.emit('motivation', response);
         return response
     else:
         return "DONE - WHY DID WE ASK FOR HELP?"
+    
 
 # @app.route('/api/onboarding', methods=['POST'])
 # def onboarding():
