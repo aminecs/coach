@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import Welcome from './Welcome.vue';
 import Name from './Name.vue';
 import Brand from './components/Brand.vue';
@@ -77,11 +77,25 @@ socket.on('motivation', (newMotivation) => {
   comp.value?.fillMotivation(newMotivation);
 });
 
+const recording = ref(false);
+const recordingText = computed(() => {
+  if (recording) {
+    return "Voice control off";
+  } else {
+    return "Voice control active";
+  }
+});
+const showVoiceControl = computed(() => {
+  return stage.value === 'Name' || stage.value === 'Coach' || stage.value === 'Motivation' || stage.value === 'Goal';
+});
+
 socket.on('recording', () => {
+  recording.value = true;
   indicator.value?.classList.add('recording');
 });
 
 socket.on('stopRecording', () => {
+  recording.value = false;
   indicator.value?.classList.remove('recording');
 });
 </script>
@@ -94,11 +108,10 @@ socket.on('stopRecording', () => {
     <Transition>
       <component :is="stages[stage]" @change-stage="changeStage" :profile="profile" ref="component"></component>
     </Transition>
-    <div class="indicator">
-      <div ref="indicator">🎤</div>
+    <div class="indicator" v-if="showVoiceControl">
+      <div ref="indicator" class="recording">{{ recordingText }}</div>
     </div>
   </main>
-
 </template>
 
 <style scoped>
@@ -107,12 +120,13 @@ socket.on('stopRecording', () => {
   justify-content: center;
 
   div {
-    font-size: 2rem;
+    font-size: 0.9rem;
+    font-weight: 100;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 2rem;
-    padding: 0rem;
-    width: 4rem;
-    height: 4rem;
+    padding: 0.5rem 0.8rem;
+    /* width: 4rem;
+    height: 4rem; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,7 +136,8 @@ socket.on('stopRecording', () => {
   }
 
   .recording {
-    background-color: white;
+    background-color: rgb(254, 255, 246);
+    color: black;
   }
 }
 </style>
