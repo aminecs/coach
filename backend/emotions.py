@@ -103,7 +103,7 @@ def get_llm_emotions_classification(status_queue, name, goal):
         
         frame_count += 1
 
-        if frame_count % (fps * 10) == 0:
+        if frame_count % (fps * 7) == 0:
             # Check if process 1 is playing audio
             while not status_queue.empty():
                 processor, is_playing = status_queue.get()

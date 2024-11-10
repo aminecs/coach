@@ -143,6 +143,7 @@ def help():
         param = "other"
         return response
     else:
+        print("NO ACTION CALLED FOR THE COACH")
         return "DONE - WHY DID WE ASK FOR HELP?"
     
 
