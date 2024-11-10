@@ -90,7 +90,7 @@ socket.on('name', (newName) => {
 
 socket.on('motivation', (newMotivation) => {
   console.log(`motivation ${newMotivation}`);
-  comp.value?.fillMotivation(res);
+  comp.value?.fillMotivation(newMotivation);
 });
 
 </script>
