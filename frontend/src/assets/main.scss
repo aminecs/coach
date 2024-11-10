@@ -29,7 +29,8 @@ body {
   padding: 3rem;
   padding-top: 2rem;
   height: calc(100vh - 4rem);
-  background-image: url(/background.png);
+  background-image: url("/background.png");
+  background-size: cover;
   color: white;
 }
 

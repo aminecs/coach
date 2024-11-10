@@ -6,7 +6,7 @@ import Button from './components/Button.vue';
 <template>
     <section class="container">
         <Brand size="big" />
-        <h3>Achieve your running goals with Coach</h3>
+        <h3>Unlock your potential with your personal AI running coach</h3>
         <Button @click="$emit('changeStage', 'Name')">
             Let's go 🔥
         </Button>

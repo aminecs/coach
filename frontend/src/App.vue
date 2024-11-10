@@ -8,6 +8,7 @@ import Coach from './Coach.vue';
 import Primary from './Primary.vue';
 import Motivation from './Motivation.vue';
 import Goal from './Goal.vue';
+import Complete from './Complete.vue';
 
 const stages = {
   Welcome,
@@ -16,9 +17,10 @@ const stages = {
   Motivation,
   Goal,
   Primary,
+  Complete
 };
 
-const stage = ref<keyof typeof stages>('Goal');
+const stage = ref<keyof typeof stages>('Welcome');
 const defaultProfile: Profile = {
   name: 'Amine',
   coach: {
@@ -26,7 +28,10 @@ const defaultProfile: Profile = {
     img: "/goggins-profile.png",
   },
   motivation: 'dfadjsf dsjfads;f jkjds;j fkdsj f',
-  goal: '5 kilometers',
+  goal: {
+    name: "5 kilometers",
+    emoji: "🏃",
+  }
 }
 const profile = ref<Profile>(defaultProfile);
 

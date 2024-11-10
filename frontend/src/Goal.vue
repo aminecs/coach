@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Button from './components/Button.vue';
-import type { Goal } from './types';
+import { goalInfo, type GoalName } from './types';
 
 const emit = defineEmits(['changeStage']);
 
-function onNext(goal: Goal) {
+function onNext(goal) {
     emit('changeStage', 'Primary', { goal });
 }
 </script>
@@ -13,27 +13,11 @@ function onNext(goal: Goal) {
 <template>
     <section class="container">
         <h3>What's your goal for your run today?</h3>
-        <Button @click="onNext('5 kilometers')">
-            <div class="icon">🏃</div>
+        <Button v-for="goal in goalInfo" @click="onNext(goal)">
+            <div class="icon">{{ goal.emoji }}</div>
             <div class="text">
-                <b>5k</b> - A great challenge for beginner to intermindate runners.
+                <b>{{ goal.name }}</b> - {{ goal.desc }}
             </div>
-        </Button>
-        <Button @click="onNext('10 kilometers')">
-            <div class="icon">🏃</div>
-            <div class="text">
-                <b>10k</b> - Ready for the next level up? Challenge yourself with a 10k.
-            </div>
-        </Button>
-        <Button @click="onNext('Marathon')">
-            <div class="icon">🚶</div>
-            <div class="text">
-                <b>Marathon</b> - Ready for the next level up, champ? Go big with a marathon.
-            </div>
-        </Button>
-        <Button @click="onNext('Custom')">
-            <div class="icon">🔧</div>
-            <div class="text">Set your own goal.</div>
         </Button>
     </section>
 </template>

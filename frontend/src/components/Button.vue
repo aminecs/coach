@@ -1,13 +1,7 @@
-<script setup lang="ts">
-// defineProps<{
-
-// }>();
-</script>
-
 <template>
-<button>
-    <slot></slot>
-</button>
+    <button>
+        <slot></slot>
+    </button>
 </template>
 
 <style lang="scss">
@@ -18,6 +12,7 @@ button {
     background-color: white;
     padding: 0.8rem 1.3rem;
     border-radius: 20px;
+    border: 1px solid #aaa;
 }
 
 button:hover {

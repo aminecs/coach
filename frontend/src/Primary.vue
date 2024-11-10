@@ -17,8 +17,10 @@ const distanceId = ref<number>(0);
 function onStart() {
     started.value = true;
     running.value = true;
+    setTimeout(() => {
+        distanceId.value = setInterval(() => distance.value += 1, 300);
+    }, 2000);
     timerId.value = setInterval(() => elapsed.value += 1, 1000);
-    distanceId.value = setInterval(() => distance.value += 1, 300);
     fetch("http://127.0.0.1:5000");
 }
 
@@ -54,13 +56,14 @@ const distanceFormatted = computed(() => {
     <section class="container">
         <div class="row">
             <div class="status">
+                <div class="profile">{{ profile.goal.emoji }}</div>
                 <div class="text">
-                    <p class="name">{{ profile.goal }}</p>
+                    <p class="name">{{ profile.goal.name }}</p>
                     <p class="description">Goal</p>
                 </div>
             </div>
             <div class="status">
-                <img :src="profile.coach?.img">
+                <img class="profile" :src="profile.coach?.img">
                 <div class="text">
                     <p class="name">{{ profile.coach?.name }}</p>
                     <p class="description">Coach</p>
@@ -94,7 +97,7 @@ const distanceFormatted = computed(() => {
                 <Button @click="onPlayPause">
                     <fa-icon :icon="['fa-solid', running ? 'fa-pause' : 'fa-play']" />
                 </Button>
-                <Button>
+                <Button @click="$emit('changeStage', 'Complete')">
                     <fa-icon icon="fa-solid fa-stop" />
                 </Button>
             </div>
@@ -165,6 +168,10 @@ const distanceFormatted = computed(() => {
 img {
     width: 4rem;
     height: 4rem;
+}
+
+.profile {
+    font-size: 2.5rem;
 }
 
 .text {
