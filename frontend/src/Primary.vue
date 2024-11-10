@@ -148,6 +148,17 @@ const onStop = () => {
                     <p class="description">Dave & Central cee</p>
                 </div>
             </div>
+            <div class="status">
+                <img src="/mansion.png">
+                <div class="text">
+                    <p class="meta">
+                        <img class="luma" src="/luma.svg">
+                        Luma AI · Dream Machine
+                    </p>
+                    <p class="name">Mansion of my dreams</p>
+                    <!-- <p class="description"></p> -->
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -157,10 +168,16 @@ const onStop = () => {
     justify-content: space-between;
 }
 
+.luma {
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0;
+}
+
 .row {
     width: 100%;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     justify-content: space-between;
 }
 
@@ -186,10 +203,14 @@ const onStop = () => {
     }
 }
 
+.name {
+    font-size: 1rem;
+}
+
 .status {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
-    padding: 1rem;
+    padding: 0.8rem;
     width: 100%;
     display: flex;
     gap: 1rem;
@@ -218,8 +239,8 @@ img {
 }
 
 p {
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
 }
 
 .description {
