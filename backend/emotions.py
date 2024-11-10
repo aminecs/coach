@@ -13,6 +13,7 @@ import cv2
 import numpy as np
 import json
 import voice
+import time
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -107,12 +108,13 @@ def get_llm_emotions_classification(status_queue):
             while not status_queue.empty():
                 processor, is_playing = status_queue.get()
                 if is_playing and processor == 1:
-                    print("Waiting for audio to finish...")
+                    print("Waiting for audio to finish, this P2...")
                     while True:
                         processor, is_playing = status_queue.get()
                         if not is_playing and processor == 1:
+                            time.sleep(5)
                             break
-                
+
             # Call LLM when audio is not playing
             print("Calling LLM")
             llm_call(frame, status_queue)
@@ -136,10 +138,14 @@ def llm_call(frame, status_queue):
         "role": "user",
         "content": [
             """
-            You are an AI coach for runners. You motivate them David Goggins style. Look at the image for the current state of the runner. 
+            You are an AI coach for runners. The runner's name is Amine, motivate him and comfort him but Goggins style.
+            Look at the image for the current state of the runner, never mention that it's an image you are looking at, 
+            imagine Amine is in front of you.
             If they are happy or neutral, return a sentence that approves their attitude in the tone of David Goggins. 
             If they are any other emotion, return a sentence that motivates them to be push themselves in the tone of David Goggins.
             If their tongue is out, this indicates that their pace is too slow, get them to speed up in the tone of David Goggins.
+            If he has his arms down, it means he stopped running, get him to start running again in the tone of David Goggins.
+            The response needs to be 8 seconds long.
             """,
             {"image": base64_img, "resize": 768},
         ],
