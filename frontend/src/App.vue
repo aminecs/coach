@@ -9,6 +9,7 @@ import Primary from './Primary.vue';
 import Motivation from './Motivation.vue';
 import Goal from './Goal.vue';
 import Complete from './Complete.vue';
+import Leaderboard from './Leaderboard.vue';
 
 const stages = {
   Welcome,
@@ -17,7 +18,8 @@ const stages = {
   Motivation,
   Goal,
   Primary,
-  Complete
+  Complete,
+  Leaderboard
 };
 
 const stage = ref<keyof typeof stages>('Welcome');
@@ -27,7 +29,7 @@ const defaultProfile: Profile = {
     name: "David Goggins",
     img: "/goggins-profile.png",
   },
-  motivation: 'dfadjsf dsjfads;f jkjds;j fkdsj f',
+  motivation: 'I want a house, to be a unicorn founder and a bunch of cash.',
   goal: {
     name: "5 kilometers",
     emoji: "🏃",

@@ -42,7 +42,7 @@ const emit = defineEmits(['changeStage']);
                 </div>
             </div>
         </div>
-        <Button>See leaderboard 🏆</Button>
+        <Button @click="$emit('changeStage', 'Leaderboard')">See leaderboard 🏆</Button>
     </section>
 </template>
 
