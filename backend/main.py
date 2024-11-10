@@ -6,22 +6,33 @@ import multiprocessing
 import voice, stt
 
 app = Flask(__name__)
+
+# More permissive allowed origins configuration
 allowed_origins = [
-    "http://localhost:5173",  # Vite default
-    "http://127.0.0.1:5173"
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://*.ngrok-free.app",  # Updated pattern for ngrok URLs
+    "https://*.ngrok.io",
+    "http://localhost:*",        # Allow any local port
+    "http://127.0.0.1:*"        # Allow any local IP port
 ]
 
-# Enable CORS for Flask routes
-CORS(app, resources={
-    r"/*": {
-        "origins": allowed_origins,
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
-        "supports_credentials": False,
-        "expose_headers": ["Content-Range", "X-Content-Range"]
-    }
-})
-socketio = SocketIO(app, cors_allowed_origins=allowed_origins)
+# Enable CORS for Flask routes with more permissive settings
+CORS(app, 
+     resources={r"/*": {
+         "origins": "*",  # More permissive for development
+         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+         "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "ngrok-skip-browser-warning"],
+         "supports_credentials": True,  # Enable credentials
+         "expose_headers": ["Content-Range", "X-Content-Range"]
+     }})
+
+# Initialize SocketIO with more permissive settings
+socketio = SocketIO(app, 
+                   cors_allowed_origins="*",
+                   ping_timeout=60,
+                   ping_interval=25,
+                   async_mode='threading')  # Added async mode
 
 @app.route("/")
 def hello_world():
@@ -60,13 +71,14 @@ def video_endpoint():
 
 @app.after_request
 def after_request(response):
-    origin = request.headers.get('Origin')
-    if origin in allowed_origins:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    # Handle CORS headers for all responses
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 
+                        'Content-Type, Authorization, X-Requested-With, ngrok-skip-browser-warning')
+    response.headers.add('Access-Control-Allow-Methods', 
+                        'GET, PUT, POST, DELETE, OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
-
 
 @app.route('/api/audio', methods=['GET'])
 def audio_endpoint():
@@ -77,4 +89,8 @@ def audio_endpoint():
     return response
 
 if __name__ == "__main__":
-    socketio.run(app, host="127.0.0.1", port=5000)
+    # Changed to listen on all interfaces
+    socketio.run(app, 
+                host="0.0.0.0",  # Changed from 127.0.0.1 to allow external access
+                port=8200,
+                allow_unsafe_werkzeug=True)  # Added for development

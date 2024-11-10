@@ -23,7 +23,7 @@ function onStart() {
         distanceId.value = setInterval(() => distance.value += 1, 300);
     }, 2000);
     timerId.value = setInterval(() => elapsed.value += 1, 1000);
-    fetch("http://127.0.0.1:5000?" + new URLSearchParams({
+    fetch("http://127.0.0.1:8200?" + new URLSearchParams({
         name: profile.name!,
         goal: profile.goal?.name!,
     }), {
@@ -60,7 +60,7 @@ const distanceFormatted = computed(() => {
     return `${km}.${zeroPad(m, 2)}`;
 });
 
-const socket = io("http://127.0.0.1:5000", {
+const socket = io("http://127.0.0.1:8200", {
     withCredentials: false,
     transports: ['websocket', 'polling']
 });
