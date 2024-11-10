@@ -94,7 +94,6 @@ def get_llm_emotions_classification(status_queue, name, goal):
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     frame_count = 0
 
-    just_exited = False
     while True:
         ret, frame = cap.read()
 
@@ -104,7 +103,7 @@ def get_llm_emotions_classification(status_queue, name, goal):
         
         frame_count += 1
 
-        if frame_count % (fps * 5) == 0:
+        if frame_count % (fps * 10) == 0:
             # Check if process 1 is playing audio
             while not status_queue.empty():
                 processor, is_playing = status_queue.get()
@@ -114,7 +113,6 @@ def get_llm_emotions_classification(status_queue, name, goal):
                         processor, is_playing = status_queue.get()
                         if not is_playing and processor == 1:
                             time.sleep(10)
-                            just_exited = True
                             break
 
             # Call LLM when audio is not playing
