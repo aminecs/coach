@@ -33,7 +33,7 @@ defineExpose({ setName });
 
 <style lang="scss" scoped>
 input {
-    width: 100%;
+    width: 70%;
     font-size: 1.1rem;
     font-family: inherit;
     font-weight: 500;

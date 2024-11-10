@@ -6,6 +6,12 @@ import { goalInfo, type GoalName } from './types';
 const emit = defineEmits(['changeStage']);
 
 function onNext(goal) {
+    fetch("http://127.0.0.1:8200/api/stop_onboarding", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
     emit('changeStage', 'Primary', { goal });
 }
 </script>
