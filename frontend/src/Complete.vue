@@ -9,9 +9,7 @@ const { profile } = defineProps<{
 
 const emit = defineEmits(['changeStage']);
 
-// function onNext(goal: Goal) {
-//     emit('changeStage', 'Primary', { goal });
-// }
+
 </script>
 
 <template>

@@ -3,6 +3,8 @@ import { computed, ref } from 'vue';
 import Button from './components/Button.vue';
 import { socket, type Profile } from './types';
 
+const emit = defineEmits(['changeStage']);
+
 const { profile } = defineProps<{
     profile: Profile
 }>();
@@ -64,6 +66,22 @@ socket.on('video', () => {
     showMansion.value = true;
     setTimeout(() => showMansion.value = false, 7000);
 });
+
+const onStop = () => {
+    fetch("http://127.0.0.1:8200/terminate", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    fetch("http://127.0.0.1:8200/api/leaderboard", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    emit('changeStage', 'Complete');
+};
 </script>
 
 <template>
@@ -114,7 +132,7 @@ socket.on('video', () => {
                 <Button @click="onPlayPause">
                     <fa-icon :icon="['fa-solid', running ? 'fa-pause' : 'fa-play']" />
                 </Button>
-                <Button @click="$emit('changeStage', 'Complete')">
+                <Button @click="onStop">
                     <fa-icon icon="fa-solid fa-stop" />
                 </Button>
             </div>
