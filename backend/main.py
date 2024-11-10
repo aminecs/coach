@@ -35,7 +35,7 @@ def hello_world():
     
     # Create and start processes
     p1 = multiprocessing.Process(target=conversations.start_conversation, args=(status_queue,))
-    p2 = multiprocessing.Process(target=emotions.get_llm_emotions_classification, args=(status_queue,))
+    p2 = multiprocessing.Process(target=emotions.get_llm_emotions_classification, args=(status_queue, name, goal))
     
     p1.start()
     p2.start()

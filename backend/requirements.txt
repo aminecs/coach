@@ -83,3 +83,4 @@ wheel==0.44.0
 yarl==1.17.1
 Flask-SocketIO==5.4.1
 flask-cors
+soundfile
