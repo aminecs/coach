@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import Button from './components/Button.vue';
 import type { Profile } from './types';
+import { io } from 'socket.io-client'
 
 const { profile } = defineProps<{
     profile: Profile
@@ -13,7 +14,7 @@ const elapsed = ref<number>(0.);
 const timerId = ref<number>(0);
 const distance = ref<number>(0);
 const distanceId = ref<number>(0);
-const showMansion = ref<boolean>(true);
+const showMansion = ref<boolean>(false);
 
 function onStart() {
     started.value = true;
@@ -25,7 +26,12 @@ function onStart() {
     fetch("http://127.0.0.1:5000?" + new URLSearchParams({
         name: profile.name!,
         goal: profile.goal?.name!,
-    }));
+    }), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 }
 
 function onPlayPause() {
@@ -54,10 +60,17 @@ const distanceFormatted = computed(() => {
     return `${km}.${zeroPad(m, 2)}`;
 });
 
-function onShowMansion() {
+const socket = io("http://127.0.0.1:5000", {
+    withCredentials: false,
+    transports: ['websocket', 'polling']
+});
+socket.on('connect', function () {
+    console.log('connected websocket');
+});
+socket.on('video', () => {
     showMansion.value = true;
-    setInterval(() => showMansion.value = false, 3000);
-}
+    setInterval(() => showMansion.value = false, 7000);
+});
 </script>
 
 <template>
