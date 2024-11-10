@@ -92,8 +92,9 @@ def get_llm_emotions_classification(status_queue):
     print("Getting LLM emotions classification")
     cap = cv2.VideoCapture(0)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
-    frame_count = 3
+    frame_count = 0
 
+    just_exited = False
     while True:
         ret, frame = cap.read()
 
@@ -108,11 +109,12 @@ def get_llm_emotions_classification(status_queue):
             while not status_queue.empty():
                 processor, is_playing = status_queue.get()
                 if is_playing and processor == 1:
-                    print("Waiting for audio to finish, this P2...")
+                    print("Waiting for audio to finish, this is emotions aka P2...")
                     while True:
                         processor, is_playing = status_queue.get()
                         if not is_playing and processor == 1:
-                            time.sleep(5)
+                            time.sleep(10)
+                            just_exited = True
                             break
 
             # Call LLM when audio is not playing
@@ -144,8 +146,8 @@ def llm_call(frame, status_queue):
             If they are happy or neutral, return a sentence that approves their attitude in the tone of David Goggins. 
             If they are any other emotion, return a sentence that motivates them to be push themselves in the tone of David Goggins.
             If their tongue is out, this indicates that their pace is too slow, get them to speed up in the tone of David Goggins.
-            If he has his arms down, it means he stopped running, get him to start running again in the tone of David Goggins.
-            The response needs to be 8 seconds long.
+            If he has his hands on his heads, it means he stopped running, get him to start running again in the tone of David Goggins.
+            The response needs to be short.
             """,
             {"image": base64_img, "resize": 768},
         ],

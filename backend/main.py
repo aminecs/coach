@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    #voice.speak("LET'S GET THIS RUN STARTING. START SLOW, FINISH STRONG. STAY HARD!")
+    voice.speak("LET'S GET THIS RUN STARTING. START SLOW, FINISH STRONG. STAY HARD!")
     # Create communication queue for audio status
     status_queue = multiprocessing.Queue()
     
