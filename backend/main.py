@@ -7,6 +7,8 @@ import voice, stt
 
 app = Flask(__name__)
 
+param = None
+onboarding_cnv = None
 # More permissive allowed origins configuration
 allowed_origins = [
     "http://localhost:5173",
@@ -67,7 +69,7 @@ def hello_world():
 def video_endpoint():
     print("FUNCTION CALL WORKING - Video appears")
     socketio.emit('video')
-    return 'ok'
+    return "OK"
 
 @app.after_request
 def after_request(response):
@@ -82,11 +84,45 @@ def after_request(response):
 
 @app.route('/api/audio', methods=['GET'])
 def audio_endpoint():
+    global param
     param = request.args.get('param')
-    print("STARTING STT")
-    response = stt.stt(param)
-    print("response")
-    return response
+    # print("STARTING STT")
+    # response = stt.stt(param)
+    # print("response")
+    return f"DONE - SET TO {param}"
+
+@app.route('/api/start_onboarding', methods=['GET'])
+def start_onboarding():
+    global onboarding_cnv
+    onboarding_cnv = conversations.onboarding()
+    print("START: ", onboarding_cnv)
+    return "ONBOARDING STARTED"
+
+@app.route('/api/stop_onboarding', methods=['GET'])
+def stop_onboarding():
+    global onboarding_cnv
+    print("STOP: ", onboarding_cnv)
+    onboarding_cnv.end_session()
+    return "ONBOARDING STOPPED"
+
+@app.route('/api/help', methods=['GET'])
+def help():
+    print("HELP IS HERE")
+    print("COACH IS HERE")
+    if param == "name":
+        voice.speak("What's your name?")
+        response = stt.stt(param)
+        return response
+    elif param == "motivation":
+        voice.speak("What's your goal?")
+        response = stt.stt(param)
+        return response
+    else:
+        return "DONE - WHY DID WE ASK FOR HELP?"
+
+# @app.route('/api/onboarding', methods=['POST'])
+# def onboarding():
+#     print("ONBOARDING IS HERE")
 
 if __name__ == "__main__":
     # Changed to listen on all interfaces
