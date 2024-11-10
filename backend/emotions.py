@@ -120,7 +120,7 @@ def get_llm_emotions_classification(status_queue, name, goal):
             llm_call(frame, status_queue, name, goal)
             frame_count = 0  # optional
 
-        cv2.imshow('frame', frame)
+        #cv2.imshow('frame', frame)
 
         if cv2.waitKey(1) == ord('q'):
             break
