@@ -136,7 +136,7 @@ socket.on('stopRecording', () => {
   }
 
   .recording {
-    background-color: rgb(254, 255, 246);
+    background-color: rgb(254, 255, 246, 0.9);
     color: black;
   }
 }
