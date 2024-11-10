@@ -38,10 +38,13 @@ const profile = ref<Profile>(defaultProfile);
 
 const comp = useTemplateRef('component');
 
+const indicator = useTemplateRef('indicator');
+
 async function changeStage(
   newStage: keyof typeof stages,
   newProfile: Profile,
 ) {
+  indicator.value?.classList.remove('recording');
   stage.value = newStage;
   profile.value = { ...profile.value, ...newProfile };
   console.log(JSON.parse(JSON.stringify(profile.value)));
@@ -50,12 +53,6 @@ async function changeStage(
     case 'Name':
       param = 'name';
       break;
-    // case 'Coach':
-    //   param = 'coach';
-    //   break;
-    // case 'Goal':
-    //   param = 'goal'
-    //   break;
     case 'Motivation':
       param = 'motivation'
       break;
@@ -67,19 +64,6 @@ async function changeStage(
         'Content-Type': 'application/json',
       },
     });
-    // const res = await resp.text();
-    // console.log(res);
-    // switch (newStage) {
-    //   case 'Name':
-    //     comp.value?.setName(res);
-    //     break;
-    //   // case 'Coach':
-    //   //   comp.value?.clickGoggins();
-    //   //   break;
-    //   case 'Motivation':
-    //     comp.value?.fillMotivation(res);
-    //     break;
-    // }
   }
 }
 
@@ -93,6 +77,13 @@ socket.on('motivation', (newMotivation) => {
   comp.value?.fillMotivation(newMotivation);
 });
 
+socket.on('recording', () => {
+  indicator.value?.classList.add('recording');
+});
+
+socket.on('stopRecording', () => {
+  indicator.value?.classList.remove('recording');
+});
 </script>
 
 <template>
@@ -103,8 +94,35 @@ socket.on('motivation', (newMotivation) => {
     <Transition>
       <component :is="stages[stage]" @change-stage="changeStage" :profile="profile" ref="component"></component>
     </Transition>
+    <div class="indicator">
+      <div ref="indicator">🎤</div>
+    </div>
   </main>
 
 </template>
 
-<style scoped></style>
+<style scoped>
+.indicator {
+  display: flex;
+  justify-content: center;
+
+  div {
+    font-size: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2rem;
+    padding: 0rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .recording {
+    background-color: white;
+  }
+}
+</style>

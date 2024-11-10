@@ -128,14 +128,17 @@ def help():
     print("COACH IS HERE")
     if param == "name":
         voice.speak("What's your name?")
+        socketio.emit('recording');
         response = stt.stt(param)
         socketio.emit('name', response);
+        socketio.emit('stopRecording');
         param = "other"
         return response
     elif param == "motivation":
         voice.speak("What's your motivation?")
         response = stt.stt(param)
-        socketio.emit('motivation', response)
+        socketio.emit('motivation', response);
+        socketio.emit('stopRecording');
         param = "other"
         return response
     else:

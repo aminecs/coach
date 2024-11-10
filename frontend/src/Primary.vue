@@ -61,7 +61,6 @@ const distanceFormatted = computed(() => {
     return `${km}.${zeroPad(m, 2)}`;
 });
 
-
 socket.on('video', () => {
     showMansion.value = true;
     setTimeout(() => showMansion.value = false, 7000);
