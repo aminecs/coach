@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTemplateRef } from 'vue';
 import Button from './components/Button.vue';
 import { coachInfo, type CoachName } from '@/types';
 
@@ -7,12 +8,22 @@ const emit = defineEmits(['changeStage']);
 function onNext(coach: CoachName) {
     emit('changeStage', 'Motivation', { coach: coachInfo[coach] });
 }
+
+const gogginsBtn = useTemplateRef('goggins-btn');
+
+function clickGoggins() {
+    console.log('clicking goggins');
+    gogginsBtn.value?.longPress();
+}
+
+defineExpose({ clickGoggins });
+
 </script>
 
 <template>
     <section class="container">
         <h3>Choose your coach</h3>
-        <Button @click="onNext('goggins')">
+        <Button @click="onNext('goggins')" ref="goggins-btn">
             <img src="/goggins-profile.png">
             <div class="text">
                 <p class="name">David Goggins</p>

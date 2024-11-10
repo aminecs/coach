@@ -38,19 +38,19 @@ def save_audio(recording, sample_rate, filename="recording.wav"):
 
 def stt(param):
     if param == "coach":
-        time.sleep(5)
+        time.sleep(2)
         return "Goggins"
     elif param == "goal":
-        time.sleep(5)
+        time.sleep(2)
         return "5k"
 
     api_key = os.environ.get("GROQ_API")
     client = Groq(api_key=api_key)
-    
+
     # Record audio
-    duration = 8  # seconds
+    duration = 5  # seconds
     recording, sample_rate = record_audio(duration)
-    
+
     # Save recorded audio
     audio_file = save_audio(recording, sample_rate)
     print(f"Audio saved to {audio_file}")

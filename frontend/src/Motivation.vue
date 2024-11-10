@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import Button from './components/Button.vue';
 
 const emit = defineEmits(['changeStage']);
@@ -8,6 +8,18 @@ const motivation = ref("");
 function onNext() {
     emit('changeStage', 'Goal', { motivation });
 }
+
+const btn = useTemplateRef('btn');
+
+function fillMotivation(newMotivation: string) {
+    motivation.value = newMotivation;
+    console.log(`newMotivation ${newMotivation}`);
+    setTimeout(() => {
+        btn.value?.longPress();
+    }, 1500);
+}
+
+defineExpose({ fillMotivation });
 </script>
 
 <template>
@@ -18,7 +30,7 @@ function onNext() {
             the run gets tough.
         </p>
         <textarea v-model="motivation" placeholder="What motivates me is..." @keyup.enter.native="onNext" />
-        <Button @click="onNext">
+        <Button @click="onNext" ref="btn">
             Next
         </Button>
     </section>

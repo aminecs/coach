@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import Welcome from './Welcome.vue';
 import Name from './Name.vue';
 import Brand from './components/Brand.vue';
-import type { CoachName, Profile } from './types';
+import type { Profile } from './types';
 import Coach from './Coach.vue';
 import Primary from './Primary.vue';
 import Motivation from './Motivation.vue';
@@ -31,17 +31,53 @@ const defaultProfile: Profile = {
   goal: {
     name: "5 kilometers",
     emoji: "🏃",
+    desc: "A great challenge for beginner to intermindate runners."
   }
 }
 const profile = ref<Profile>(defaultProfile);
 
-function changeStage(
+const comp = useTemplateRef('component');
+
+async function changeStage(
   newStage: keyof typeof stages,
   newProfile: Profile,
 ) {
   stage.value = newStage;
   profile.value = { ...profile.value, ...newProfile };
   console.log(JSON.parse(JSON.stringify(profile.value)));
+  let param = undefined;
+  switch (newStage) {
+    case 'Name':
+      param = 'name';
+      break;
+    case 'Coach':
+      param = 'coach';
+      break;
+    case 'Goal':
+      param = 'goal'
+      break;
+    case 'Motivation':
+      param = 'motivation'
+      break;
+  }
+  if (param !== undefined) {
+    const resp = await fetch("http://127.0.0.1:8200/api/audio?" + new URLSearchParams({ param }), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const res = await resp.text();
+    console.log(res);
+    switch (newStage) {
+      case 'Coach':
+        comp.value?.clickGoggins();
+        break;
+      case 'Motivation':
+        comp.value?.fillMotivation(res);
+        break;
+    }
+  }
 }
 </script>
 
@@ -51,7 +87,7 @@ function changeStage(
       <Brand />
     </div>
     <Transition>
-      <component :is="stages[stage]" @change-stage="changeStage" :profile="profile"></component>
+      <component :is="stages[stage]" @change-stage="changeStage" :profile="profile" ref="component"></component>
     </Transition>
   </main>
 
