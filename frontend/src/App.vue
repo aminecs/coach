@@ -20,7 +20,7 @@ const stages = {
   Complete
 };
 
-const stage = ref<keyof typeof stages>('Primary');
+const stage = ref<keyof typeof stages>('Welcome');
 const defaultProfile: Profile = {
   name: 'Amine',
   coach: {

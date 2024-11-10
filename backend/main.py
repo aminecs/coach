@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import emotions, conversations
 import multiprocessing
 import voice
@@ -7,6 +7,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
+    name = request.args.get('name')
+    goal = request.args.get('goal')
+
+    print(name, goal)
     voice.speak("LET'S GET THIS RUN STARTING. START SLOW, FINISH STRONG. STAY HARD!")
     # Create communication queue for audio status
     status_queue = multiprocessing.Queue()

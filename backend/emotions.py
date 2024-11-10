@@ -88,7 +88,7 @@ def get_feed():
 
 # Open AI solution
 
-def get_llm_emotions_classification(status_queue):
+def get_llm_emotions_classification(status_queue, name, goal):
     print("Getting LLM emotions classification")
     cap = cv2.VideoCapture(0)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -119,7 +119,7 @@ def get_llm_emotions_classification(status_queue):
 
             # Call LLM when audio is not playing
             print("Calling LLM")
-            llm_call(frame, status_queue)
+            llm_call(frame, status_queue, name, goal)
             frame_count = 0  # optional
 
         cv2.imshow('frame', frame)
@@ -131,7 +131,7 @@ def get_llm_emotions_classification(status_queue):
     cv2.destroyAllWindows()
 
 
-def llm_call(frame, status_queue):
+def llm_call(frame, status_queue, name, goal):
     _, buffer = cv2.imencode(".jpg", frame)
     base64_img = base64.b64encode(buffer).decode("utf-8")
 
@@ -139,8 +139,8 @@ def llm_call(frame, status_queue):
     {
         "role": "user",
         "content": [
-            """
-            You are an AI coach for runners. The runner's name is Amine, motivate him and comfort him but Goggins style.
+            f"""
+            You are an AI coach for runners. The runner's name is {name} and he is running a {goal}, motivate him and comfort him but Goggins style.
             Look at the image for the current state of the runner, never mention that it's an image you are looking at, 
             imagine Amine is in front of you.
             If they are happy or neutral, return a sentence that approves their attitude in the tone of David Goggins. 

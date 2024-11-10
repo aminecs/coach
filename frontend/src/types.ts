@@ -49,5 +49,9 @@ export interface Profile {
     img: string;
   };
   motivation?: string;
-  goal?: Goal;
+  goal?: {
+    name: string;
+    emoji: string;
+    desc: string;
+  };
 }

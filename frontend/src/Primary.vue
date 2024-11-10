@@ -22,7 +22,10 @@ function onStart() {
         distanceId.value = setInterval(() => distance.value += 1, 300);
     }, 2000);
     timerId.value = setInterval(() => elapsed.value += 1, 1000);
-    fetch("http://127.0.0.1:5000");
+    fetch("http://127.0.0.1:5000?" + new URLSearchParams({
+        name: profile.name!,
+        goal: profile.goal?.name!,
+    }));
 }
 
 function onPlayPause() {
