@@ -136,6 +136,7 @@ def help():
         return response
     elif param == "motivation":
         voice.speak("What's your motivation?")
+        socketio.emit('recording');
         response = stt.stt(param)
         socketio.emit('motivation', response);
         socketio.emit('stopRecording');

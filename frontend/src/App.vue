@@ -79,10 +79,10 @@ socket.on('motivation', (newMotivation) => {
 
 const recording = ref(false);
 const recordingText = computed(() => {
-  if (recording) {
-    return "Voice control off";
-  } else {
+  if (recording.value) {
     return "Voice control active";
+  } else {
+    return "Voice control off";
   }
 });
 const showVoiceControl = computed(() => {
@@ -108,8 +108,17 @@ socket.on('stopRecording', () => {
     <Transition>
       <component :is="stages[stage]" @change-stage="changeStage" :profile="profile" ref="component"></component>
     </Transition>
+    <div class="start-indicator" v-if="stage === 'Welcome'">
+      <img src="/indicator.png">
+      <div>
+        Say 'Hey Coach' to activate voice control
+      </div>
+    </div>
     <div class="indicator" v-if="showVoiceControl">
-      <div ref="indicator" class="recording">{{ recordingText }}</div>
+      <div ref="indicator">
+        <img :src="!recording ? '/indicator.png' : 'indicator-active.png'">
+        {{ recordingText }}
+      </div>
     </div>
   </main>
 </template>
@@ -118,6 +127,11 @@ socket.on('stopRecording', () => {
 .indicator {
   display: flex;
   justify-content: center;
+
+  img {
+    width: 2rem;
+    margin-right: 0.5rem;
+  }
 
   div {
     font-size: 0.9rem;
@@ -130,14 +144,23 @@ socket.on('stopRecording', () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    -webkit-backdrop-filter: blur(8px);
+    /* -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3); */
   }
 
   .recording {
-    background-color: rgb(254, 255, 246, 0.9);
+    background-color: white;
     color: black;
   }
+}
+
+.start-indicator {
+  img {
+    width: 3rem;
+    margin: 0.5rem;
+  }
+
+  font-size: 0.9rem;
 }
 </style>
