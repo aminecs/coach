@@ -73,7 +73,7 @@ button:hover,
 
 button:active,
 .active {
-    background-color: #d29300;
+    background-color: #BEE0ED;
     color: white;
     box-shadow: rgba(1, 51, 60, 0.7) 0px 5px 5px;
 }

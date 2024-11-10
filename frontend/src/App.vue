@@ -70,9 +70,12 @@ async function changeStage(
     const res = await resp.text();
     console.log(res);
     switch (newStage) {
-      case 'Coach':
-        comp.value?.clickGoggins();
+      case 'Name':
+        comp.value?.setName(res);
         break;
+      // case 'Coach':
+      //   comp.value?.clickGoggins();
+      //   break;
       case 'Motivation':
         comp.value?.fillMotivation(res);
         break;
