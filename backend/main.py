@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 param = None
 onboarding_cnv = None
+p1, p2 = None, None
 # More permissive allowed origins configuration
 allowed_origins = [
     "http://localhost:5173",
@@ -38,6 +39,7 @@ socketio = SocketIO(app,
 
 @app.route("/")
 def hello_world():
+    global p1, p2
     name = request.args.get('name')
     goal = request.args.get('goal')
 
@@ -64,6 +66,15 @@ def hello_world():
         p2.join()
 
     return "<p>Hello, World!</p>"
+
+@app.route("/terminate")
+def bye_world():
+    global p1, p2
+    p1.terminate()
+    p2.terminate()
+    p1.join()
+    p2.join()
+    return "<p>Goodbye, World!</p>"
 
 @app.route('/api/video', methods=['GET'])
 def video_endpoint():
@@ -107,12 +118,14 @@ def stop_onboarding():
 
 @app.route('/api/help', methods=['GET'])
 def help():
+    global param
     print("HELP IS HERE")
     print("COACH IS HERE")
     if param == "name":
         voice.speak("What's your name?")
         response = stt.stt(param)
         socketio.emit('name', response);
+        param = "other"
         return response
     elif param == "motivation":
         voice.speak("What's your motivation?")
