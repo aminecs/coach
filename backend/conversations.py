@@ -10,7 +10,7 @@ API_KEY = os.getenv("ELEVEN_API_KEY")
 
 client = ElevenLabs(api_key=API_KEY)
 
-def start_conversation():
+def start_conversation(status_queue):
     conversation = Conversation(
         # API client and agent ID.
         client,
@@ -29,6 +29,7 @@ def start_conversation():
 
         # Uncomment if you want to see latency measurements.
         callback_latency_measurement=lambda latency: print(f"Latency: {latency}ms"),
+        status_queue=status_queue
     )
 
     conversation.start_session()

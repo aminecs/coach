@@ -87,30 +87,36 @@ def get_feed():
 
 # Open AI solution
 
-def get_llm_emotions_classification(control_event):
+def get_llm_emotions_classification(status_queue):
     print("Getting LLM emotions classification")
     cap = cv2.VideoCapture(0)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
-
     frame_count = 3
-    while(True):
+
+    while True:
         ret, frame = cap.read()
 
         if not ret:
             print("Error: failed to capture image")
             break
-        else:
-            frame_count += 1
+        
+        frame_count += 1
 
-            if frame_count % (fps * 5) == 0:
-                # Call LLM
-                print("Calling LLM")
-                control_event.clear()
-                response = llm_call(frame)
-                control_event.set()
-                print(response)
-                # optional 
-                frame_count = 0
+        if frame_count % (fps * 5) == 0:
+            # Check if process 1 is playing audio
+            while not status_queue.empty():
+                processor, is_playing = status_queue.get()
+                if is_playing and processor == 1:
+                    print("Waiting for audio to finish...")
+                    while True:
+                        processor, is_playing = status_queue.get()
+                        if not is_playing and processor == 1:
+                            break
+                
+            # Call LLM when audio is not playing
+            print("Calling LLM")
+            llm_call(frame, status_queue)
+            frame_count = 0  # optional
 
         cv2.imshow('frame', frame)
 
@@ -121,7 +127,7 @@ def get_llm_emotions_classification(control_event):
     cv2.destroyAllWindows()
 
 
-def llm_call(frame):
+def llm_call(frame, status_queue):
     _, buffer = cv2.imencode(".jpg", frame)
     base64_img = base64.b64encode(buffer).decode("utf-8")
 
@@ -148,6 +154,10 @@ def llm_call(frame):
 
 
     result = client.chat.completions.create(**params)
-    voice.speak(result.choices[0].message.content)
+    response = result.choices[0].message.content
+    print(response)
+    status_queue.put((2,True))
+    voice.speak(response)
+    status_queue.put((2,False))
     # emotion = json.loads(result.choices[0].message.content)["emotion"]
     # return emotion
