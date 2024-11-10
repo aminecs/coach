@@ -26,7 +26,7 @@ defineExpose({ fillMotivation });
     <section class="container">
         <h3>What is that motivates you</h3>
         <p>
-            Tell you coach, and they'll keep you motivated when
+            Tell your coach, and they'll keep you motivated when
             the run gets tough.
         </p>
         <textarea v-model="motivation" placeholder="What motivates me is..." @keyup.enter.native="onNext" />
