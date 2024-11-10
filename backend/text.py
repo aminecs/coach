@@ -18,12 +18,12 @@ def get_response(text: str):
             # how it should behave throughout the conversation.
             {
                 "role": "system",
-                "content": "You are a coach for runners, you motivate them David Goggins style."
+                "content": "Respond accurately, don't deviate from the user's input.",
             },
             # Set a user message for the assistant to respond to.
             {
                 "role": "user",
-                "content": f"The user is feeling {text}",
+                "content": f"{text}",
             }
         ],
 

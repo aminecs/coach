@@ -1,7 +1,7 @@
 from flask import Flask, request
 import emotions, conversations
 import multiprocessing
-import voice
+import voice, stt
 
 app = Flask(__name__)
 
@@ -38,6 +38,14 @@ def hello_world():
 def video_endpoint():
     print("FUNCTION CALL WORKING - Video appears")
     return "FUNCTION CALL - Video appears"
+
+@app.route('/api/audio', methods=['GET'])
+def audio_endpoint():
+    param = request.args.get('param')
+    print("STARTING STT")
+    response = stt.stt(param)
+    print("response")
+    return response
 
 if __name__ == "__main__":
     app.run()
