@@ -85,10 +85,12 @@ async function changeStage(
 
 socket.on('name', (newName) => {
   console.log(`name ${newName}`);
+  comp.value?.setName(newName);
 });
 
 socket.on('motivation', (newMotivation) => {
   console.log(`motivation ${newMotivation}`);
+  comp.value?.fillMotivation(res);
 });
 
 </script>
