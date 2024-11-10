@@ -12,7 +12,7 @@ button {
     background-color: white;
     padding: 0.8rem 1.3rem;
     border-radius: 20px;
-    border: 1px solid #aaa;
+    border: 1px solid #555;
 }
 
 button:hover {

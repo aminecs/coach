@@ -13,6 +13,7 @@ const elapsed = ref<number>(0.);
 const timerId = ref<number>(0);
 const distance = ref<number>(0);
 const distanceId = ref<number>(0);
+const showMansion = ref<boolean>(true);
 
 function onStart() {
     started.value = true;
@@ -50,6 +51,10 @@ const distanceFormatted = computed(() => {
     return `${km}.${zeroPad(m, 2)}`;
 });
 
+function onShowMansion() {
+    showMansion.value = true;
+    setInterval(() => showMansion.value = false, 3000);
+}
 </script>
 
 <template>
@@ -75,6 +80,9 @@ const distanceFormatted = computed(() => {
                 Start
             </Button>
         </div>
+        <video autoplay muted loop v-else-if="showMansion">
+            <source src="/mansion.mp4" type="video/mp4">
+        </video>
         <div v-else class="main">
             <div class="row other">
                 <div class="stat">
@@ -214,5 +222,10 @@ p {
     h2 {
         font-size: 2.5rem;
     }
+}
+
+video {
+    width: calc(100% + 4rem);
+    margin: 0 -2rem;
 }
 </style>
