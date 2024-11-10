@@ -30,5 +30,10 @@ def hello_world():
 
     return "<p>Hello, World!</p>"
 
+@app.route('/api/video', methods=['GET'])
+def video_endpoint():
+    print("FUNCTION CALL WORKING - Video appears")
+    return "FUNCTION CALL - Video appears"
+
 if __name__ == "__main__":
     app.run()
