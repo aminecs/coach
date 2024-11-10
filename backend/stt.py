@@ -1,13 +1,11 @@
 import sounddevice as sd
 import soundfile as sf
 import numpy as np
-import requests
-import json
-import wave
 import os
 from groq import Groq
 from scipy.io import wavfile
 import text
+import time
 
 def text_to_speech(client, filename="tts_output.wav"):
     with open(filename, "rb") as file:
@@ -40,8 +38,10 @@ def save_audio(recording, sample_rate, filename="recording.wav"):
 
 def stt(param):
     if param == "coach":
+        time.sleep(5)
         return "Goggins"
     elif param == "goal":
+        time.sleep(5)
         return "5k"
 
     api_key = os.environ.get("GROQ_API")
